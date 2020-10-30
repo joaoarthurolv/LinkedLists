@@ -21,6 +21,18 @@ class LinkedList:
 
         self._size = self._size + 1
     
+    # Inserção no início da lista
+    def insert_at_beginning(self, element):
+        if(self.head):
+            # Inserção quando a lista já possui elementos
+            new_node = Node(element)
+            new_node.next = self.head
+            self.head = new_node
+        else:
+            # Primeira inserção
+            self.head = Node(element)
+        
+        self._size = self._size + 1
     # Retorna o tamanho da lista
     def __len__(self):
         return self._size
@@ -88,3 +100,7 @@ print(len(lista))
 lista.append(80)
 
 print(len(lista))
+
+lista.insert_at_beginning(1)
+
+print(lista.__getitem__(0))
