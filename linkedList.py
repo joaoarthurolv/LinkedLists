@@ -4,21 +4,72 @@ class LinkedList:
     def __init__(self):
         self.head = None
         self._size = 0
-
-    # Inserção ao final da lista
-    def append(self, element):
+    
+    def append(self, elem):
         if self.head:
-            # Inserção quando a lista já possui elementos
-            aux_pointer = self.head
-
-            while(aux_pointer.next):
-                aux_pointer = aux_pointer.next
-            
-            aux_pointer.next = Node(element)
+            # inserção quando a lista já possui elementos
+            pointer = self.head
+            while(pointer.next):
+                pointer = pointer.next
+            pointer.next = Node(elem)
         else:
-            # Primeira inserção
-            self.head = Node(element)
+            # primeira inserção
+            self.head = Node(elem)
+        self._size = self._size + 1
 
+    def __len__(self):
+        """Retorna o tamanho da lista"""
+        return self._size
+
+    def _getnode(self, index):
+        pointer = self.head
+        for i in range(index):
+            if pointer:
+                pointer = pointer.next
+            else:
+                raise IndexError("list index out of range") #return None
+        return pointer
+
+    def set(self, index, elem):
+        # lista.set(5, 9)
+        pass
+
+    def __getitem__(self, index):
+        # a = lista[6]
+        pointer = self._getnode(index)
+        if pointer:
+            return pointer.data
+        else:
+            raise IndexError("list index out of range")
+
+    def __setitem__(self, index, elem):
+        # lista[5] = 9
+        pointer = self._getnode(index)
+        if pointer:
+            pointer.data = elem
+        else:
+            raise IndexError("list index out of range")
+
+    def index(self, elem):
+        """Retorna o índice do elem na lista"""
+        pointer = self.head
+        i = 0
+        while(pointer):
+            if pointer.data == elem:
+                return i
+            pointer = pointer.next
+            i = i+1
+        raise ValueError("{} is not in list".format(elem))
+
+    def insert(self, index, elem):
+        node = Node(elem)
+        if index == 0:
+            node.next = self.head
+            self.head = node
+        else:
+            pointer = self._getnode(index-1)
+            node.next = pointer.next
+            pointer.next = node
         self._size = self._size + 1
     
     # Inserção no início da lista
@@ -33,74 +84,74 @@ class LinkedList:
             self.head = Node(element)
         
         self._size = self._size + 1
-    # Retorna o tamanho da lista
-    def __len__(self):
-        return self._size
-
-    def get(self, index):
-        # a = lista.get(6)
-        pass
-
-    def set(self, index, element):
-        # lista.set(5, 9)
-        pass
     
-    # Recuperação de item utilizando sobrecarga de operadores
-    def __getitem__(self, index):
-        # a = lista[5]
-        aux_pointer = self.head
-        
-        for i in range(index):
-            if aux_pointer:
-                aux_pointer = aux_pointer.next
-            else:
-                raise IndexError("list index out of range")
-        
-        if aux_pointer:
-            return aux_pointer.data
-        raise IndexError("list index out of range")
-    
-    # Definição de item utilizando sobrecarga de operadores
-    def __setitem__(self, index, element):
-        # lista[5] = 9
-        aux_pointer = self.head
-        
-        for i in range(index):
-            if aux_pointer:
-                aux_pointer = aux_pointer.next
-            else:
-                raise IndexError("list index out of range")
-        
-        if aux_pointer:
-            aux_pointer.data = element
+    def remove(self, elem):
+        if self.head == None:
+            raise ValueError("{} is not in list".format(elem))
+        elif self.head.data == elem:
+            self.head = self.head.next
+            self._size = self._size - 1
+            return True
         else:
-            raise IndexError("list index out of range")
-        
-    # Retorna o índice do elemento da lista
-    def index(self, element):
-        aux_pointer = self.head
-        i = 0
+            ancestor = self.head
+            pointer = self.head.next
+            while(pointer):
+                if pointer.data == elem:
+                    ancestor.next = pointer.next
+                    pointer.next = None
+                    self._size = self._size - 1
+                    return True
+                ancestor = pointer
+                pointer = pointer.next
+        raise ValueError("{} is not in list".format(elem))
 
-        while(aux_pointer):
-            if aux_pointer.data == element:
-                return i
-            else:
-                aux_pointer = aux_pointer.next
-                i = i + 1
-        raise ValueError("{} is not in the list".format(element))
+    def __repr__(self):
+        r = ""
+        pointer = self.head
+        while(pointer):
+            r = r + str(pointer.data) + "->"
+            pointer = pointer.next
+        return r
+    
+    # def destroy(self):
+    #     self.head = None
+
 
 lista = LinkedList()
 
-print(len(lista))
+# print(len(lista))
 
-lista.append(7)
+# lista.append(7)
+# lista.append(80)
 
-print(len(lista))
+# print(len(lista))
 
-lista.append(80)
+# print("Posição 0:", lista[0])
+# print("Posição 1:", lista[1])
 
-print(len(lista))
+# lista.insert_at_beginning(85)
 
-lista.insert_at_beginning(1)
+# print("---------------")
 
-print(lista.__getitem__(0))
+# print("Posição 0:", lista[0])
+# print("Posição 1:", lista[1])
+# print("Posição 2:", lista[2])
+
+# lista.insert(1, 25)
+
+# print("---------------")
+
+# print("Posição 0:", lista[0])
+# print("Posição 1:", lista[1])
+# print("Posição 2:", lista[2])
+# print("Posição 3:", lista[3])
+
+# lista.insert(3, 90)
+
+# print("---------------")
+
+# print("Posição 0:", lista[0])
+# print("Posição 1:", lista[1])
+# print("Posição 2:", lista[2])
+# print("Posição 3:", lista[3])
+# print("Posição 4:", lista[4])
